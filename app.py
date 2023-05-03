@@ -7,9 +7,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length
 from flask_bcrypt import Bcrypt
-
-
-
+#-------------------------------------------------------------------------------------------------------
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = 'thisismysecretkey'
@@ -21,11 +19,6 @@ with app.app_context():
     db = SQLAlchemy(app)
     bcrypt=Bcrypt(app)
 #--------------------------------------------------------------------------------------------------------
-class Userd(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), nullable=False, unique=True)
-    password = db.Column(db.String(60), nullable=False)
-
 class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)],
                            render_kw={'placeholder': 'username...'})
@@ -79,7 +72,7 @@ def index():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = Userd.query.filter_by(username=form.username.data).first()
+        user = User.query.filter_by(username=form.username.data).first()
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
@@ -104,6 +97,6 @@ def logout():
     return redirect(url_for('login'))
 
 
-
+#---------------------------------------------------------------------------------------
 if __name__ == '__main__':
     app.run(debug=True)
