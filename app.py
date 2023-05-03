@@ -61,8 +61,8 @@ class Category(db.Model):
     name = db.Column(db.String(20), nullable=False)
 #-----------------------------------------------------------
 @login_manager.user_loader
-def load_user(userd_id):
-    return User.query.get(int(userd_id))
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 @app.route('/')
 def index():
@@ -84,7 +84,7 @@ def register():
     form = RegisterForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = Userd(username=form.username.data, password=hashed_password)
+        new_user = User(username=form.username.data, password=hashed_password)
         # existing = db.query.filter_by(username=form.username.data).first()
         db.session.add(new_user)
         db.session.commit()
