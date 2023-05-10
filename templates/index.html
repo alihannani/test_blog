@@ -4,9 +4,6 @@
 
 
 
-
-
-
 <head>
     <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
 
@@ -33,9 +30,17 @@
 </header>
 
 
+<body>
+
+{%for post in posts%}
+<div class= "post">
+<h2>{{post.title}}</h2>
+<p>{{post.desc}}</p>
+</div>
+{%endfor%}
 
 
-
+</body>
 
 {% extends 'base.html' %}
 

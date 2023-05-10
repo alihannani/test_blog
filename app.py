@@ -6,6 +6,7 @@ from flask_login import  LoginManager, login_user, logout_user, login_required, 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length
+from wtforms.widgets import TextArea
 from flask_bcrypt import Bcrypt
 #-------------------------------------------------------------------------------------------------------
 app = Flask(__name__)
@@ -32,6 +33,12 @@ class LoginForm(FlaskForm):
     password = PasswordField(validators=[InputRequired(), Length(min=6, max=20)],
                            render_kw={'placeholder': 'Enater Password'})
     submit = SubmitField('Login')
+
+class PostForm(FlaskForm):
+    title= StringField(validators=[InputRequired()])
+    tags= StringField(validators=[InputRequired()])
+    content= StringField(validators=[InputRequired()],widget=TextArea())
+    submit=SubmitField('Creat post')
 
 #-----------------------------------------------------------------------------------------
 
@@ -66,7 +73,8 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    posts = Post.query.all()
+    return render_template('index.html', posts=posts)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -76,7 +84,8 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
-                return render_template('dashboard.html')
+                return redirect(url_for('dashboard'))
+                
     return render_template('login.html', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -84,7 +93,7 @@ def register():
     form = RegisterForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password=hashed_password)
+        new_user = User(username=form.username.data, password=hashed_password, role='author')
         # existing = db.query.filter_by(username=form.username.data).first()
         db.session.add(new_user)
         db.session.commit()
@@ -96,7 +105,46 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    posts = Post.query.filter_by(author_id=current_user.id)
+    return render_template('dashboard.html', current_user=current_user,posts=posts)
 
+@app.route('/new', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data,
+                    desc=form.content.data)
+        post.author = current_user
+        form.title.data =''
+        form.tags.data =''
+        form.content.data =''
+        db.session.add(post)
+        db.session.commit()
+        
+    return render_template('new_post.html', form=form)
+#------------------------------------------------------------------------------
+@app.route('/delete/<int:id>')
+def delete(id):
+    post = Post.query.get_or_404(id=id)
+    try:
+        db.session.delete(post)
+        db.session.commit()
+        return redirect('/dashboard')   
+    except:
+        return 'there was a problem dejeting the task'
+@app.route('/update/<int:id>', methods=['POST', 'GET'])
+def update(id):
+    task = Post.query.get_or_404(id)
+    if request.method == 'GET':
+        return render_template('update.html', task=task)
+    elif request.method == 'POST':
+        task.text = request.form['content']
+        db.session.commit()
+        return redirect('/note')
 #---------------------------------------------------------------------------------------
 if __name__ == '__main__':
     app.run(debug=True)
