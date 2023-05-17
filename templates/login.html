@@ -2,7 +2,7 @@
 <head>
     <link rel="stylesheet" href="{{url_for('static', filename='login.css')}}">
 </head>
-<form action="" method="post">
+<form action="" method="post", class="formm">
 
   {{form.hidden_tag()}}
     <div class="container">
@@ -20,7 +20,7 @@
       
   
       
-      <button>{{form.submit}}</button>
+      <button>{{form.submit(class_='form-submit')}}</button>
 
     </div>
   
