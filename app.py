@@ -4,7 +4,7 @@ from flask_login import UserMixin
 from datetime import datetime
 from flask_login import  LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField,FileField
 from wtforms.validators import InputRequired, Length
 from wtforms.widgets import TextArea
 from flask_bcrypt import Bcrypt
@@ -38,6 +38,7 @@ class PostForm(FlaskForm):
     title= StringField(validators=[InputRequired()])
     tags= StringField(validators=[InputRequired()])
     content= StringField(validators=[InputRequired()],widget=TextArea())
+    image = FileField()
     submit=SubmitField('Creat post')
 
 #-----------------------------------------------------------------------------------------
@@ -55,7 +56,7 @@ class Post(db.Model):
     date_created = db.Column(db.DateTime, default=datetime.now)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     id_labeled = db.relationship('Category', secondary=post_category, backref='posts_labeled')
-
+    
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), nullable=False, unique=True)
@@ -108,6 +109,7 @@ def logout():
 @app.route('/dashboard')
 @login_required
 def dashboard():
+    #if current_user.role == 'admin':#
     posts = Post.query.filter_by(author_id=current_user.id)
     return render_template('dashboard.html', current_user=current_user,posts=posts)
 
@@ -118,6 +120,14 @@ def new_post():
     if form.validate_on_submit():
         post = Post(title=form.title.data,
                     desc=form.content.data)
+        tags = form.tags.data.split(',')
+        for tag in tags:
+            tag_in_db = Category.query.filter_by(name=tag).first()
+            if not tag_in_db:
+                tag_in_db=Category(name=tag)
+            post.id_labeled.append(tag_in_db)
+            db.session.add(tag_in_db)
+            db.session.commit()
         post.author = current_user
         form.title.data =''
         form.tags.data =''
@@ -144,7 +154,8 @@ def update(id):
     if request.method == 'GET':
         return render_template('update.html', post=post)
     elif request.method == 'POST':
-        post.text = request.form['content']
+        post.desc = request.form['content']
+        db.session.add(post)
         db.session.commit()
         return redirect('/dashboard')
     
