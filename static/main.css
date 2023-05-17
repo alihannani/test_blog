@@ -22,7 +22,11 @@ hr{
 .post{
   border: 5px solid black;
   text-align: center; 
+  margin-bottom: 25px;
 }
 
 
 
+*{
+  background-color: aliceblue;
+}

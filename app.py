@@ -126,10 +126,12 @@ def new_post():
         db.session.commit()
         
     return render_template('new_post.html', form=form)
+
+   
 #------------------------------------------------------------------------------
 @app.route('/delete/<int:id>')
 def delete(id):
-    post = Post.query.get_or_404(id=id)
+    post = Post.query.get_or_404(id)
     try:
         db.session.delete(post)
         db.session.commit()
@@ -138,13 +140,15 @@ def delete(id):
         return 'there was a problem dejeting the task'
 @app.route('/update/<int:id>', methods=['POST', 'GET'])
 def update(id):
-    task = Post.query.get_or_404(id)
+    post = Post.query.get_or_404(id)
     if request.method == 'GET':
-        return render_template('update.html', task=task)
+        return render_template('update.html', post=post)
     elif request.method == 'POST':
-        task.text = request.form['content']
+        post.text = request.form['content']
         db.session.commit()
-        return redirect('/note')
+        return redirect('/dashboard')
+    
+
 #---------------------------------------------------------------------------------------
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,port=7000)

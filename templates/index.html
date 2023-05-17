@@ -29,9 +29,6 @@
     </div>
 </header>
 
-
-<body>
-
 {%for post in posts%}
 <div class= "post">
 <h2>{{post.title}}</h2>
@@ -45,4 +42,3 @@
 {% extends 'base.html' %}
 
 <b><h1>{% block title %}Wordpress{% endblock %}</h1></b>
-

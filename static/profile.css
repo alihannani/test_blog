@@ -31,3 +31,9 @@ img{
 hr{
   color: black;
 }
+.post{
+  border: 5px solid black;
+  text-align: center; 
+
+}
+
