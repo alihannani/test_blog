@@ -1,0 +1,43 @@
+<head>
+    <link rel="stylesheet" href="{{url_for('static', filename='register.css')}}">
+</head>
+
+
+<form action="" method="POST">
+  {{form.hidden_tag()}}
+    <div class="container">
+      <h1>Register</h1>
+      
+      
+      
+      <label for="Email"><b>Username</b></label>
+      <br>
+      {{form.username}}
+      <br>
+      
+  
+      <label for="psw"><b>Password</b></label>
+      <br>
+      {{form.password}}
+
+      
+      
+      
+  
+      
+      
+      <button>{{form.submit}}</button>
+      
+    </div>
+  
+    <div class="container signin">
+      <p>Already have an account? <a href="{{url_for('login')}}">Sign in</a>.</p>
+      <p>you ant come in main Page?<a href="{{url_for('index')}}">Main Page</a>.</p>
+    </div>
+  </form>
+  <form method="POST" action="">
+    
+    
+    
+    
+</form>

@@ -1,0 +1,39 @@
+* {box-sizing: border-box}
+
+a {
+    text-decoration: none;
+    color: black;
+  }
+div{
+  border: 1px black;
+  text-align: right;
+  padding-top: -10mm;
+  
+}
+
+
+.login{
+  font-size: larger;
+  text-align: right;
+  
+
+}
+.register{
+  font-size: larger;
+  color: black;
+  text-align: right;
+}
+img{
+  width: 35px;
+  height: 35px;
+  
+}
+hr{
+  color: black;
+}
+.post{
+  border: 5px solid black;
+  text-align: center; 
+
+}
+

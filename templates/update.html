@@ -1,0 +1,17 @@
+<head>
+    <link rel="stylesheet" href="{{url_for('static', filename='update.css')}}">
+</head>
+
+{% extends 'base.html' %}
+
+{% block title %}Edit{% endblock %}
+{% block body %}
+<div class="containter">
+    <h1>Edit your text</h1>
+    <form action="/update/{{post.id}}" method="POST">
+        <input type="text" name="content" id="content" value={{post.desc}} />
+        <br>
+        <button><input type="submit" value="Update item..." /></button>
+    </form>
+</div>
+{% endblock %}
