@@ -1,4 +1,4 @@
-* {background-color: #f1f1f1;}
+
 
 a {
     text-decoration: none;
@@ -15,6 +15,7 @@ form {
   text-align: center;
   padding-right: 25%;
   padding-left: 25%;  
+  
 }
 
 input[type=text], input[type=password] {
@@ -38,10 +39,18 @@ button {
 }
 .form-submit{
   background-color: #0481aa;
-  padding: 14px 161px;
+  padding: 14px 100px;
   margin: 5px 0 0;
   
 }
 .formm{
-  border: black 5px;
+  border:solid black 5px;
+  padding-top: 150px;
+  width: 500px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-left: 100px;
+  margin-right: 100px;
+  height: 360px;
+  background-color: #f1f1f1;
 }

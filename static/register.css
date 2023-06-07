@@ -1,41 +1,56 @@
-* {background-color: #f1f1f1;}
 
-label{
-  background-color: white;
-}
-
-input[type=text], input[type=password] {
-  width: 50%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  background: white;
-}
-
-form{
-  padding: 100px 20px; 
-  text-align: center;
-  padding-right: 25%;
-  padding-left: 25%;
-}
-
-button {
-  background-color: #0481aa;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 50%;
-  opacity: 0.9;
-}
 
 a {
   text-decoration: none;
   color: black;
 }
-
 .signin {
-  background-color: #f1f1f1;
-  text-align: center;
+
+text-align: center;
+
+
+}
+form {
+padding: 120px 20px;
+text-align: center;
+padding-right: 25%;
+padding-left: 25%;  
+
+}
+
+input[type=text], input[type=password] {
+width: 50%;
+padding: 12px 20px;
+margin: 8px 0;
+display: inline-block;
+background-color: white;
+box-sizing: border-box;
+}
+
+
+button {
+
+color: white;
+
+
+border: none;
+cursor: pointer;
+width: 50%;
+}
+.form-submit{
+background-color: #0481aa;
+padding: 14px 70px;
+margin: 5px 0 0;
+
+}
+.formm{
+border:solid black 5px;
+padding-top: 150px;
+width: 500px;
+margin-top: 50px;
+margin-bottom: 50px;
+margin-left: 100px;
+margin-right: 100px;
+height: 360px;
+background-color: #f1f1f1;
 }

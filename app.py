@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request , redirect
+from flask import Flask, render_template,jsonify, url_for, request , redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from datetime import datetime
@@ -112,7 +112,10 @@ def dashboard():
     #if current_user.role == 'admin':#
     posts = Post.query.filter_by(author_id=current_user.id)
     return render_template('dashboard.html', current_user=current_user,posts=posts)
-
+@app.route('/by/<name>')
+def written_by(name):
+    posts = Post.query.filter_by(author_id=name)
+    return render_template('index.html', posts=posts)
 @app.route('/new', methods=['GET', 'POST'])
 @login_required
 def new_post():
@@ -159,7 +162,17 @@ def update(id):
         db.session.commit()
         return redirect('/dashboard')
     
-
+@app.route('/api/all')
+def get_all():
+    posts = Post.query.all()
+    response = []
+    for post in posts:
+        current_post = {'title': post.title,
+                'author': post.author.username,
+                'text': post.desc}
+        response.append(current_post)
+    return jsonify(response)
+    
 #---------------------------------------------------------------------------------------
 if __name__ == '__main__':
     app.run(debug=True,port=7000)

@@ -2,8 +2,8 @@
     <link rel="stylesheet" href="{{url_for('static', filename='register.css')}}">
 </head>
 
-
-<form action="" method="POST">
+<div class="test">
+<form action="" method="POST", class="formm">
   {{form.hidden_tag()}}
     <div class="container">
       <h1>Register</h1>
@@ -26,7 +26,7 @@
   
       
       
-      <button>{{form.submit}}</button>
+      <button>{{form.submit(class_='form-submit')}}</button>
       
     </div>
   
@@ -35,6 +35,7 @@
       <p>you ant come in main Page?<a href="{{url_for('index')}}">Main Page</a>.</p>
     </div>
   </form>
+</div>
   <form method="POST" action="">
     
     
