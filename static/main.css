@@ -2,19 +2,18 @@ a {
     text-decoration: none;
     color: black;
   }
-div{
 
-  text-align: right;
-  padding-top: -10mm;
-}
 .login{
+  top: 3;
   font-size: larger;
   text-align: right;
+  background-color: inherit
 }
 .register{
   font-size: larger;
   color: black;
   text-align: right;
+  background-color: inherit
 }
 hr{
   color: black;
@@ -22,6 +21,10 @@ hr{
 .post{
   border: 5px solid black;
   text-align: center; 
+  top: 35;
+  top: inherit;
+  padding-top: 35px;
+  margin-top: 35px;
   
 }
 
@@ -30,3 +33,41 @@ hr{
 *{
   background-color: aliceblue;
 }
+img{
+  position: absolute;
+  height: 100px;
+  width: 200px;
+  left: 20;
+
+
+
+}
+header{
+  background-color: grey;
+  text-align: center;
+  border: 3px solid black;
+  border-radius: 5px;
+  right: 3;
+  top: 0;
+  left: 3;
+  height: 40px;
+  text-align: right;
+  position: fixed;
+  margin-top: 0px;
+  padding-top: 0px;
+}  
+
+
+/* Style the search box inside the navigation bar */
+.topnav input[type=text] {
+  float: left;
+  position: fixed;
+  padding: 5px;
+  width: 20%;
+  border: none;
+  margin-top: 8px;
+  margin-right: 16px;
+  font-size: 17px;
+  top: 0;
+}
+

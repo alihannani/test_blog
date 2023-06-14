@@ -1,39 +1,55 @@
-* {box-sizing: border-box}
 
-a {
-    text-decoration: none;
-    color: black;
-  }
+
+
 div{
   border: 1px black;
   text-align: right;
   padding-top: -10mm;
+  top: 5;
   
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
 
 .login{
-  font-size: larger;
-  text-align: right;
-  
-
+top: 3;
+font-size: larger;
+text-align: right;
+background-color: inherit
 }
 .register{
-  font-size: larger;
-  color: black;
-  text-align: right;
-}
-img{
-  width: 35px;
-  height: 35px;
-  
+font-size: larger;
+color: black;
+text-align: right;
+background-color: inherit
 }
 hr{
-  color: black;
+color: black;
 }
 .post{
-  border: 5px solid black;
-  text-align: center; 
+border: 5px solid black;
+text-align: center; 
+top: 35;
+top: inherit;
+padding-top: 35px;
+margin-top: 35px;
 
 }
 
+
+
+*{
+background-color: aliceblue;
+}
+img{
+position: absolute;
+height: 100px;
+width: 200px;
+left: 20;
+
+
+
+}

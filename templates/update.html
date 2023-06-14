@@ -9,6 +9,8 @@
 <div class="containter">
     <h1>Edit your text</h1>
     <form action="/update/{{post.id}}" method="POST">
+        <input type="text" name="content" id="content" value={{post.title}} />
+        <input type="text" name="content" id="content" value={{post.tags}} />
         <input type="text" name="content" id="content" value={{post.desc}} />
         <br>
         <button><input type="submit" value="Update item..." /></button>

@@ -7,7 +7,7 @@
 {%block title%}Create New Post{%endblock%}
 {%block content%}
 <h1>Create New Post</h1>
-<form action="" method="post" >
+<form action="" method="post" enctype='multipart/form-data' >
 
     {{form.hidden_tag()}}
       <div class="container">
@@ -33,7 +33,7 @@
       
         
         <label type="file" for="image" id="image" name="image" accept=".PNG">
-        {{form.image}}
+        {{form.picture}}
         
         
         <br>

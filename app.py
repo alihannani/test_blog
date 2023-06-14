@@ -8,10 +8,13 @@ from wtforms import StringField, PasswordField, SubmitField,FileField
 from wtforms.validators import InputRequired, Length
 from wtforms.widgets import TextArea
 from flask_bcrypt import Bcrypt
+import os
+from wtforms.validators import DataRequired
 #-------------------------------------------------------------------------------------------------------
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = 'thisismysecretkey'
+app.config['UPLOAD_FOLDER']= 'static/pictures'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -20,6 +23,11 @@ with app.app_context():
     db = SQLAlchemy(app)
     bcrypt=Bcrypt(app)
 #--------------------------------------------------------------------------------------------------------
+
+
+
+
+
 class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)],
                            render_kw={'placeholder': 'username...'})
@@ -38,9 +46,13 @@ class PostForm(FlaskForm):
     title= StringField(validators=[InputRequired()])
     tags= StringField(validators=[InputRequired()])
     content= StringField(validators=[InputRequired()],widget=TextArea())
-    image = FileField()
+    picture = FileField()
     submit=SubmitField('Creat post')
 
+class SearchForm(FlaskForm):
+  search = StringField('search', [DataRequired()])
+  submit = SubmitField('Search',
+                       render_kw={'class': 'btn btn-success btn-block'})
 #-----------------------------------------------------------------------------------------
 
 
@@ -51,6 +63,7 @@ post_category = db.Table('post_category',
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
+    
     image = db.Column(db.String(200), nullable=True)
     desc = db.Column(db.String(1000), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.now)
@@ -67,6 +80,14 @@ class User(db.Model, UserMixin):
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
+
+    
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        return redirect((url_for('search_results', query=form.search.data)))  # or what you want
+    return render_template('search.html', form=form)
 #-----------------------------------------------------------
 @login_manager.user_loader
 def load_user(user_id):
@@ -116,13 +137,32 @@ def dashboard():
 def written_by(name):
     posts = Post.query.filter_by(author_id=name)
     return render_template('index.html', posts=posts)
+@app.route('/tag/<name>')
+def tags(name):
+    posts = Post.query.filter_by(tags=name)
+    return render_template('index.html', posts=posts)
+
+
+
+
 @app.route('/new', methods=['GET', 'POST'])
 @login_required
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data,
-                    desc=form.content.data)
+        picture= form.picture.data
+        if picture:
+            filename=str(Post.query.count()+1)+picture.filename.split('0')[0]+'.'+picture.filename.split('.')[-1]
+            filedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), app.config['UPLOAD_FOLDER'], filename)
+            picture.save(filedir)
+            post = Post(title=form.title.data,
+                    desc=form.content.data,
+                    image=filename)
+        
+            tags = form.tags.data.split(',')
+        else:
+            post = Post(title=form.title.data,
+                        desc=form.content.data)
         tags = form.tags.data.split(',')
         for tag in tags:
             tag_in_db = Category.query.filter_by(name=tag).first()
@@ -161,7 +201,8 @@ def update(id):
         db.session.add(post)
         db.session.commit()
         return redirect('/dashboard')
-    
+
+
 @app.route('/api/all')
 def get_all():
     posts = Post.query.all()
@@ -176,3 +217,4 @@ def get_all():
 #---------------------------------------------------------------------------------------
 if __name__ == '__main__':
     app.run(debug=True,port=7000)
+

@@ -1,0 +1,7 @@
+{% extends 'index.html' %}
+{% set page_title = 'Search' %}
+{% block body %}
+    <div>
+        {{ url_for('search'), form }} # note: render_form is some marco from another .html file
+    </div>
+{% endblock %}
