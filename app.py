@@ -9,7 +9,7 @@ from wtforms.validators import InputRequired, Length
 from wtforms.widgets import TextArea
 from flask_bcrypt import Bcrypt
 import os
-from wtforms.validators import DataRequired
+
 #-------------------------------------------------------------------------------------------------------
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -49,10 +49,7 @@ class PostForm(FlaskForm):
     picture = FileField()
     submit=SubmitField('Creat post')
 
-class SearchForm(FlaskForm):
-  search = StringField('search', [DataRequired()])
-  submit = SubmitField('Search',
-                       render_kw={'class': 'btn btn-success btn-block'})
+
 #-----------------------------------------------------------------------------------------
 
 
@@ -82,12 +79,7 @@ class Category(db.Model):
     name = db.Column(db.String(20), nullable=False)
 
     
-@app.route('/search', methods=['GET', 'POST'])
-def search():
-    form = SearchForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        return redirect((url_for('search_results', query=form.search.data)))  # or what you want
-    return render_template('search.html', form=form)
+
 #-----------------------------------------------------------
 @login_manager.user_loader
 def load_user(user_id):
@@ -137,10 +129,7 @@ def dashboard():
 def written_by(name):
     posts = Post.query.filter_by(author_id=name)
     return render_template('index.html', posts=posts)
-@app.route('/tag/<name>')
-def tags(name):
-    posts = Post.query.filter_by(tags=name)
-    return render_template('index.html', posts=posts)
+
 
 
 
@@ -179,7 +168,17 @@ def new_post():
         db.session.commit()
         
     return render_template('new_post.html', form=form)
-
+@app.route('/search/<text>')
+def search(text):
+    
+    all_posts = Post.query.all()
+    posts = []
+    for post in all_posts :
+        if text in post.desc:
+            posts.append(post)
+        elif text in post.title:
+            posts.append(post)
+    return render_template('dashboard.html', posts=posts, user=current_user)
    
 #------------------------------------------------------------------------------
 @app.route('/delete/<int:id>')
@@ -213,7 +212,11 @@ def get_all():
                 'text': post.desc}
         response.append(current_post)
     return jsonify(response)
-    
+@app.route('/tag/<name>')
+def posts_tagged(name):
+    tag = Category.query.filter_by(name=name).first()
+    posts = tag.posts_labeled
+    return render_template('index.html',posts=posts, user=current_user)
 #---------------------------------------------------------------------------------------
 if __name__ == '__main__':
     app.run(debug=True,port=7000)

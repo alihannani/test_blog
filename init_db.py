@@ -23,6 +23,9 @@ for i in range(10):
     user = User(username= fake.name(), password=fake.password(), role=random.choice(fakeRoles))
     users.append(user)
 
+
+
+
 for category in fakeCategories:
     categories.append(Category(name=category))
 
@@ -31,11 +34,12 @@ for i in range(100):
     posts.append(Post(title=fake.sentence(),desc=fake.text(), author=random.choice(users)))
 
 
-
+for i in posts:
+    i.id_labeled.append(random.choice(categories))
 
 
 with app.app_context():
-    db.session.add_all(tag)
+
     db.session.add_all(categories)
     db.session.add_all(users)
     db.session.add_all(posts)

@@ -6,12 +6,14 @@ div{
   text-align: right;
   padding-top: -10mm;
   top: 5;
+  background-color: inherit;
   
 }
 
 a {
   text-decoration: none;
   color: black;
+  background-color: inherit;
 }
 
 .login{
@@ -28,18 +30,25 @@ background-color: inherit
 }
 hr{
 color: black;
+background-color: inherit;
 }
 .post{
-border: 5px solid black;
-text-align: center; 
-top: 35;
-top: inherit;
-padding-top: 35px;
-margin-top: 35px;
+  border: 5px solid black;
+  text-align: center; 
+  top: 25;
+  top: inherit;
+  padding-top: 35px;
+  margin-top: 35px;
+  background-color: aquamarine;
+  border-radius: 10px;
+  
 
 }
 
-
+.w{
+  background-color: inherit;
+  
+}
 
 *{
 background-color: aliceblue;
@@ -48,6 +57,7 @@ img{
 position: absolute;
 height: 100px;
 width: 200px;
+background-color: inherit;
 left: 20;
 
 

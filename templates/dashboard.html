@@ -35,18 +35,21 @@
 
 {%for post in posts%}
 <div class= "post">
-<h2>{{post.title}}</h2>
+<h2 class="w">{{post.title}}</h2>
+<i class="w">written by: <a href="/by/{{post.author.id}}" >{{post.author.username}}</a></i>
 {%if post.image%}
 <img class='blog-pic' src="static/pictures/{{post.image}}" />
 {%endif%}
-<p>{%for tag in post.id_labeled%}{{tag.name}}{%endfor%}</p>
-<p>{{post.desc}}</p>
-
-<div>
+<p class="w">{%for tag in post.id_labeled%}<a href='tag/{{tag.name}}'>{{tag.name}} </a>{%endfor%}</p>
+<br>
+<p class="w">{{post.desc}}</p>
 <a href="/delete/{{post.id}}">Delete</a>
 <br />
 <a href="/update/{{post.id}}">Update</a>
 
+</div>
+
 {%endfor%}
+
 
 {% endblock %}
